@@ -8,6 +8,18 @@
       "npm --prefix \"$RESOURCE_DIR\" run lint",
       "npm --prefix \"$RESOURCE_DIR\" run build"
     ],
-    "runtime": "nodejs14"
+    "runtime": "nodejs14",
+    "source": "functions"
+  },
+  "emulators": {
+    "functions": {
+      "port": 9000
+    },
+    "firestore": {
+      "port": 8000
+    },
+    "ui": {
+      "enabled": true
+    }
   }
 }
