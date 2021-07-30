@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions";
 import * as express from "express";
-import {addMessage, getMessages, getComment} from "./feed/feed";
+import {addMessage, getMessages, getComment, addComment} from "./feed/feed";
 import {addUser} from "./users/users";
 
 import * as admin from "firebase-admin";
@@ -12,6 +12,7 @@ app.get("/feed", getMessages);
 app.post("/feed", addMessage);
 
 app.get("/feed/:postId", getComment);
+app.post("/feed/:postId", addComment);
 
 app.post("/user", addUser);
 
