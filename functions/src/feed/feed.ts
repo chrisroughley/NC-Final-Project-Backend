@@ -9,7 +9,7 @@ export const getComment = async (req: any, res: any) => {
       .collection("feed")
       .doc(postId)
       .collection("comments")
-      // .orderBy("date", "asc")
+      .orderBy("comment", "asc")
       .get();
 
   let comments: any[] = [];
@@ -21,12 +21,26 @@ export const getComment = async (req: any, res: any) => {
   res.status(200).send(comments);
 };
 
-export const getMessages = async ( req: any, res: any ) => {
-  const feed = await admin.firestore().collection("feed")
+export const addComment = async (req: any, res: any) => {
+  const postId = req.params.postId;
+
+  const commentBody = req.body;
+
+  await admin
+      .firestore()
+      .collection("feed")
+      .doc(postId)
+      .collection("comments")
+      .add(commentBody);
+};
+
+export const getMessages = async (req: any, res: any) => {
+  const feed = await admin
+      .firestore()
+      .collection("feed")
       // .orderBy("date", "asc")
       .get();
   console.log(Object.keys(feed.docs[0].data()));
-
 
   let messages: any[] = [];
   feed.docs.forEach((message) => {
@@ -38,9 +52,9 @@ export const getMessages = async ( req: any, res: any ) => {
   res.status(200).send(messages);
 };
 
-export const addMessage = async ( req: any, res: any ) => {
+export const addMessage = async (req: any, res: any) => {
   // const postDate = new Date();
-  const messageBody = {...req.body/* , postDate*/};
+  const messageBody = {...req.body /* , postDate*/};
   await admin.firestore().collection("feed").add(messageBody);
   res.status(201).send(messageBody);
 };
