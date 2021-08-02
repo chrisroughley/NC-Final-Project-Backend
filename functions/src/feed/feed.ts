@@ -29,6 +29,11 @@ type Request = {
   params: {goalId: string}
 }
 
+type PostRequest = {
+  body: {postBody: string;}
+  params: {goalId: string}
+}
+
 // export const getComment = async (req: any, res: any) => {
 //   const postId = req.params.postId;
 //   console.log("ENDPOINT", req.params);
@@ -86,11 +91,30 @@ export const getFeed= async (req: Request, res: Response) => {
   res.status(200).send(goalFeed);
 };
 
-export const addPostToFeed = async (req: any, res: any) => {
-  // const postDate = new Date();
-  const messageBody = {...req.body /* , postDate*/};
-  await admin.firestore().collection("feed").add(messageBody);
-  res.status(201).send(messageBody);
+export const addPostToFeed = async (req: PostRequest, res: Response) => {
+  const goalId = req.params.goalId;
+  const postDate = new Date();
+  const postBody = {
+    ...req.body,
+    postDate,
+    comments: [],
+    user: "Jerry",
+  };
+  const currentGoal = await admin
+      .firestore()
+      .collection("goals")
+      .doc(goalId)
+      .get();
+  const currentGoalData = currentGoal.data();
+  currentGoalData?.feed.push(postBody);
+  if (currentGoalData) {
+    await admin
+        .firestore()
+        .collection("goals")
+        .doc(goalId)
+        .set(currentGoalData);
+  }
+  res.status(201).send(currentGoalData);
 };
 
 
