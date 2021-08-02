@@ -44,14 +44,14 @@ export const getFeed= async (req: any, res: any) => {
       // .orderBy("date", "asc")
       .get();
 
-  let messages: any[] = [];
-  feed.docs.forEach((message) => {
-    const id = message.id;
-    const data = message.data();
-    messages = [...messages, {id, ...data}];
+  let posts: any[] = [];
+  feed.docs.forEach((post) => {
+    const id = post.id;
+    const data = post.data();
+    posts = [...posts, {id, ...data}];
   });
 
-  res.status(200).send(messages);
+  res.status(200).send(posts);
 };
 
 export const addPost = async (req: any, res: any) => {

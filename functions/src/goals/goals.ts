@@ -9,7 +9,10 @@ export const getGoalById = async (req:any, res:any) => {
       .doc(goalId)
       .get();
 
-  res.status(200).send(goal.data());
+  const goalData = goal.data();
+  // const goalFeed = goalData;
+
+  res.status(200).send(goalData);
 };
 
 // export const getComment = async (req: any, res: any) => {
