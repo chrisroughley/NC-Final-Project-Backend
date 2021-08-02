@@ -1,5 +1,6 @@
 import {Response} from "express";
 import * as admin from "firebase-admin";
+import * as uniqid from "uniqid";
 
 type Comment = {
   commentBody: string;
@@ -93,12 +94,11 @@ export const getFeed= async (req: Request, res: Response) => {
 
 export const addPostToFeed = async (req: PostRequest, res: Response) => {
   const goalId = req.params.goalId;
-  const postDate = new Date();
   const postBody = {
     ...req.body,
-    postDate,
+    postDate: new Date(),
     comments: [],
-    user: "Jerry",
+    postId: uniqid(),
   };
   const currentGoal = await admin
       .firestore()
@@ -117,4 +117,19 @@ export const addPostToFeed = async (req: PostRequest, res: Response) => {
   res.status(201).send(currentGoalData);
 };
 
+// export const addComment = async (req: any, res: any) => {
+//   const postId = req.params.postId;
+
+//   const commentBody = req.body;
+//   commentBody.postDate = new Date();
+
+//   await admin
+//       .firestore()
+//       .collection("feed")
+//       .doc(postId)
+//       .collection("comments")
+//       .add(commentBody);
+
+//   res.status(201).send(commentBody);
+// };
 
