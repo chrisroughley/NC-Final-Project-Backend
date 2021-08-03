@@ -31,63 +31,44 @@ type Request = {
 } | undefined
 }
 
-export const setNewGoal = async (req: Request, res: Response) => {
-  const {startDate, endDate, goalName, goalTarget, category, feed} = req.body;
-  try {
-    const goalsCollection = await admin.firestore().collection("goals");
-    const newGoal = {
-      startDate,
-      endDate,
-      goalName,
-      goalTarget,
-      category,
-      feed,
-    };
-    goalsCollection.add(newGoal);
-    res.status(200).send({
-      status: "success",
-      message: "goal added successfully",
-      data: newGoal,
-    });
-  } catch (err) {
-    res.status(500).json(err.message);
-  }
-};
-
-export const getGoalById = async (req: Request, res: Response) => {
-  const goalId = req?.params?.goalId;
-  try {
-    if (goalId) {
-      const goal = await admin
-          .firestore()
-          .collection("goals")
-          .doc(goalId)
-          .get();
-      const goalData = goal.data();
-      res.status(200).send(goalData);
+export const setNewGoal =
+  async (req: Request, res: Response): Promise<void> => {
+    const {startDate, endDate, goalName, goalTarget, category, feed} = req.body;
+    try {
+      const goalsCollection = await admin.firestore().collection("goals");
+      const newGoal = {
+        startDate,
+        endDate,
+        goalName,
+        goalTarget,
+        category,
+        feed,
+      };
+      goalsCollection.add(newGoal);
+      res.status(200).send({
+        status: "success",
+        message: "goal added successfully",
+        data: newGoal,
+      });
+    } catch (err) {
+      res.status(500).json(err.message);
     }
-  } catch (err) {
-    res.status(500).json(err.message);
-  }
-};
+  };
 
-// export const getComment = async (req: any, res: any) => {
-//   const postId = req.params.postId;
-//   console.log("ENDPOINT", req.params);
-
-//   const commentsFeed = await admin
-//       .firestore()
-//       .collection("feed")
-//       .doc(postId)
-//       .collection("comments")
-//       .orderBy("comment", "asc")
-//       .get();
-
-//   let comments: any[] = [];
-//   commentsFeed.docs.forEach((comment) => {
-//     const commentId = comment.id;
-//     const commentData = comment.data();
-//     comments = [...comments, {commentId, ...commentData}];
-//   });
-//   res.status(200).send(comments);
-// };
+export const getGoalById =
+  async (req: Request, res: Response): Promise<void> => {
+    const goalId = req?.params?.goalId;
+    try {
+      if (goalId) {
+        const goal = await admin
+            .firestore()
+            .collection("goals")
+            .doc(goalId)
+            .get();
+        const goalData = goal.data();
+        res.status(200).send(goalData);
+      }
+    } catch (err) {
+      res.status(500).json(err.message);
+    }
+  };

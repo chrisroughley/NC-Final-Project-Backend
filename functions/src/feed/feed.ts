@@ -35,101 +35,42 @@ type PostRequest = {
   params: {goalId: string}
 }
 
-// export const getComment = async (req: any, res: any) => {
-//   const postId = req.params.postId;
-//   console.log("ENDPOINT", req.params);
-
-//   const commentsFeed = await admin
-//       .firestore()
-//       .collection("feed")
-//       .doc(postId)
-//       .collection("comments")
-//       .orderBy("comment", "asc")
-//       .get();
-
-//   let comments: any[] = [];
-//   commentsFeed.docs.forEach((comment) => {
-//     const commentId = comment.id;
-//     const commentData = comment.data();
-//     comments = [...comments, {commentId, ...commentData}];
-//   });
-//   res.status(200).send(comments);
-// };
-
-// export const addComment = async (req: any, res: any) => {
-//   const postId = req.params.postId;
-
-//   const commentBody = req.body;
-//   commentBody.postDate = new Date();
-
-//   await admin
-//       .firestore()
-//       .collection("feed")
-//       .doc(postId)
-//       .collection("comments")
-//       .add(commentBody);
-
-//   res.status(201).send(commentBody);
-// };
-
-export const getFeed= async (req: Request, res: Response) => {
-  const goalId = req.params.goalId;
-  const goal = await admin
-      .firestore()
-      .collection("goals")
-      .doc(goalId)
-      // .orderBy("date", "asc")
-      .get();
-
-  // let posts: any[] = [];
-  const goalFeed = goal?.data()?.feed;
-  // goal.feed.forEach((post) => {
-  //   const id = post.id;
-  //   const data = post.data();
-  //   posts = [...posts, {id, ...data}];
-  // });
-
-  res.status(200).send(goalFeed);
-};
-
-export const addPostToFeed = async (req: PostRequest, res: Response) => {
-  const goalId = req.params.goalId;
-  const postBody = {
-    ...req.body,
-    postDate: new Date(),
-    comments: [],
-    postId: uniqid(),
-  };
-  const currentGoal = await admin
-      .firestore()
-      .collection("goals")
-      .doc(goalId)
-      .get();
-  const currentGoalData = currentGoal.data();
-  currentGoalData?.feed.push(postBody);
-  if (currentGoalData) {
-    await admin
+export const getFeed =
+  async (req: Request, res: Response): Promise<void> => {
+    const goalId = req.params.goalId;
+    const goal = await admin
         .firestore()
         .collection("goals")
         .doc(goalId)
-        .set(currentGoalData);
-  }
-  res.status(201).send(currentGoalData);
-};
+        .get();
 
-// export const addComment = async (req: any, res: any) => {
-//   const postId = req.params.postId;
+    const goalFeed = goal?.data()?.feed;
 
-//   const commentBody = req.body;
-//   commentBody.postDate = new Date();
+    res.status(200).send(goalFeed);
+  };
 
-//   await admin
-//       .firestore()
-//       .collection("feed")
-//       .doc(postId)
-//       .collection("comments")
-//       .add(commentBody);
-
-//   res.status(201).send(commentBody);
-// };
-
+export const addPostToFeed =
+  async (req: PostRequest, res: Response): Promise<void> => {
+    const goalId = req.params.goalId;
+    const postBody = {
+      ...req.body,
+      postDate: new Date(),
+      comments: [],
+      postId: uniqid(),
+    };
+    const currentGoal = await admin
+        .firestore()
+        .collection("goals")
+        .doc(goalId)
+        .get();
+    const currentGoalData = currentGoal.data();
+    currentGoalData?.feed.push(postBody);
+    if (currentGoalData) {
+      await admin
+          .firestore()
+          .collection("goals")
+          .doc(goalId)
+          .set(currentGoalData);
+    }
+    res.status(201).send(currentGoalData);
+  };

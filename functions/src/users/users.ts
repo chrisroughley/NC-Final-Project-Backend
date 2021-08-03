@@ -7,21 +7,23 @@ type UserRequest = {
   password: string}
 }
 
-export const addUser = async (req: UserRequest, res: Response) => {
-  const user = {
-    ...req.body,
-    id: uniqid(),
-    progress: 0,
+export const addUser =
+  async (req: UserRequest, res: Response): Promise<void> => {
+    const user = {
+      ...req.body,
+      id: uniqid(),
+      progress: 0,
+    };
+    await admin.firestore().collection("users").add(user);
+    res.status(201).send(user);
   };
-  await admin.firestore().collection("users").add(user);
-  res.status(201).send(user);
-};
 
-export const getUsers = async (req: any, res: Response) => {
-  const users = await admin.firestore().collection("users").get();
-  const usersArray = users.docs.map((doc) => {
-    return doc.data();
-  });
-  res.status(200).send(usersArray);
-};
+export const getUsers =
+  async (req: UserRequest, res: Response): Promise<void> => {
+    const users = await admin.firestore().collection("users").get();
+    const usersArray = users.docs.map((doc) => {
+      return doc.data();
+    });
+    res.status(200).send(usersArray);
+  };
 
