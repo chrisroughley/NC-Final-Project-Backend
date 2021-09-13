@@ -3,7 +3,7 @@
 
 ## Achieve
 
-This is the back end of Achieve, a social goal making app that allows users to create goals and add friends to track each other’s progress built with Typescript, Express, Firestore and Firebase. This app was created as part of our final project for the <a href="https://northcoders.com/">Northcoder</a> coding bootcamp. Team members: <a href="https://github.com/harryyork97">Harry York</a>, <a href="https://github.com/JohnA-NC">John Andre</a>, <a href="https://github.com/Lee-250">Lee Broadhurst</a>.
+This is the back end of Achieve, a social goal making app that allows users to create goals and add friends to track each other’s progress built with Typescript, Express, Firestore and Firebase. This app was created as part of our final project for the <a href="https://northcoders.com/">Northcoders</a> coding bootcamp. Team members: <a href="https://github.com/harryyork97">Harry York</a>, <a href="https://github.com/JohnA-NC">John Andre</a>, <a href="https://github.com/Lee-250">Lee Broadhurst</a>.
 
 ## Endpoints
 
